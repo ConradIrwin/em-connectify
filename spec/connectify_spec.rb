@@ -1,4 +1,4 @@
-require_relative '../lib/em-connectify'
+require File.expand_path('../lib/em-connectify', File.dirname(__FILE__))
 
 describe EventMachine do
 

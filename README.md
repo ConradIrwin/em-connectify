@@ -26,3 +26,11 @@ end
 What's happening here? First, we open a raw TCP connection to the CONNECT proxy (after all, all data will flow through it). Then, we provide a Handler connection class, which includes "EM::Connectify". Once the TCP connection is established, EventMachine calls the **connection_completed** method in our handler. Here, we call connectify with the actual destination host & port (address that we actually want to get to), and the module does the rest.
 
 After you call connectify, the module temporarily intercepts your receive_data callbacks, negotiates the connection, and then once all is done, returns the control back to your code. Simple as that.
+
+### Authorization
+
+If you need to log into your proxy server, pass the username and password to `connectify` and em-connectify will send a `Proxy-Authorization: Basic` header.
+
+```ruby
+connectify('google.ca', 80, 'username', 'password')
+```

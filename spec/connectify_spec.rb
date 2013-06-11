@@ -12,11 +12,13 @@ describe EventMachine do
       end
 
       def connection_completed
-        connectify('google.ca', 80) do
+        connectify('google.ca', 80, 'conrad', 'conrad') do
           puts "ping"
           send_data "GET / HTTP/1.1\r\nConnection:close\r\nHost: google.ca\r\n\r\n"
         end.callback do
           puts "ping"
+        end.errback do |e|
+          puts e
         end
       end
 

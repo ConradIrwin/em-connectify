@@ -4,7 +4,13 @@ module EventMachine
       SUCCESS_PREFIX = "HTTP/1.0 200 "
 
       def connect_send_handshake
-        header =  "CONNECT #{@connect_target_host}:#{@connect_target_port} HTTP/1.0\r\n\r\n"
+        header =  "CONNECT #{@connect_target_host}:#{@connect_target_port} HTTP/1.0\r\n"
+        if @connect_username || @connect_password
+          encoded_credentials = Base64.strict_encode64([@connect_username, @connect_password].join(":"))
+          header << "Proxy-Authorization: Basic #{encoded_credentials}\r\n"
+        end
+
+        header << "\r\n"
         send_data(header)
       end
 

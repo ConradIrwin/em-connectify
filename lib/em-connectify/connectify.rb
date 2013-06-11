@@ -2,9 +2,11 @@
 module EventMachine
 
   module Connectify
-    def connectify(host, port, &blk)
+    def connectify(host, port, username=nil, password=nil, &blk)
       @connect_target_host = host
       @connect_target_port = port
+      @connect_username = username
+      @connect_password = password
       @connect_data = ''
 
       connect_hook

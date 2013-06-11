@@ -1,8 +1,6 @@
 module EventMachine
   module Connectify
     module CONNECT
-      SUCCESS_PREFIX = "HTTP/1.0 200 "
-
       def connect_send_handshake
         header =  "CONNECT #{@connect_target_host}:#{@connect_target_port} HTTP/1.0\r\n"
         if @connect_username || @connect_password
@@ -17,9 +15,7 @@ module EventMachine
       private
 
       def connect_parse_response
-        return if @connect_data.size < SUCCESS_PREFIX.size
-
-        unless @connect_data.start_with?(SUCCESS_PREFIX) && @connect_data.end_with?("\r\n\r\n")
+        unless @connect_data =~ %r{\AHTTP/1\.[01] 200 .*\r\n\r\n}m
           raise CONNECTError.new, "Unexpected response: #{@connect_data}"
         end
 
